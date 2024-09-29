@@ -1,0 +1,460 @@
+---
+title: "Project Proposal Muhammad Aetazaz Siddiqi ISE 201"
+author: "Muhammad Aetazaz Siddiqi"
+date: "2024-03-09"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Project Details:
+
+We used this data (airlines safety) because it had one categorical variable "airline" & 7 numerical variables, which I can use to answer the question of which airline happens to be most dangerous to fly with. Note that it's not just the one with the most fatal incidents, but the one for whom the fatal incidents and traveled miles ratio is the highest.
+
+```{r, echo=TRUE}
+if (!require("pacman")) install.packages("pacman")
+p_load(sjmisc, stringr, tidyverse, 
+       magrittr, ggplot2)
+
+airlines_accident_data <-read.csv("airline-safety.csv")
+head(airlines_accident_data)
+```
+
+## Data Details
+
+### Source
+
+I got this data from here: <https://github.com/fivethirtyeight/data/blob/master/airline-safety/README.md>
+
+However, the real source for this data is the Aviation Safety Network, which can be found here: <https://aviation-safety.net/>
+
+### Variables:
+
+The rows represent each airline, while the columns description is as follows:
+
+`airline` \| Airline (asterisk indicates that regional subsidiaries are included)
+
+`avail_seat_km_per_week` \| Available seat kilometers flown every week
+
+`incidents_85_99` \| Total number of incidents, 1985–1999
+
+`fatal_accidents_85_99` \| Total number of fatal accidents, 1985–1999
+
+`fatalities_85_99` \| Total number of fatalities, 1985–1999
+
+`incidents_00_14` \| Total number of incidents, 2000–2014
+
+`fatal_accidents_00_14` \| Total number of fatal accidents, 2000–2014
+
+`fatalities_00_14` \| Total number of fatalities, 2000–2014
+
+The study itself was purely observational. No passengers or crew members were hurt in the name of scientific experiments (probably).
+
+# Exploratory Data Analysis (EDA):
+
+Now let's check for the missing values:
+
+```{r, echo=TRUE}
+
+missing_values <- is.na(airlines_accident_data)
+
+# Count the number of missing values in each column
+missing_count <- colSums(missing_values)
+
+# Total number of missing values in the data frame
+total_missing <- sum(missing_count)
+
+# Print the results
+print("Missing values in each column:")
+print(missing_count)
+print(paste("Total missing values:", total_missing))
+
+```
+
+Now that we understand that there are no missing values, we can start working on the exploratory data analysis.
+
+```{r}
+weekly_distance_travelled<- airlines_accident_data$avail_seat_km_per_week
+incidents_85_99<- airlines_accident_data$incidents_85_99
+fatal_incidents_85_99<-airlines_accident_data$fatal_accidents_85_99
+fatalities_85_99<-airlines_accident_data$fatalities_85_99
+incidents_00_14<-airlines_accident_data$incidents_00_14
+fatal_incidents_00_14<-airlines_accident_data$fatal_accidents_00_14
+fatalities_00_14<-airlines_accident_data$fatalities_00_14
+print(nrow(airlines_accident_data))
+
+```
+
+```{r}
+average_fatal_incidents_85_99<-mean(fatal_incidents_85_99)
+print(average_fatal_incidents_85_99)
+average_fatal_incidents_00_14<-mean(fatal_incidents_00_14)
+print(average_fatal_incidents_00_14)
+average_incidents_85_99<-mean(incidents_85_99)
+print(average_incidents_85_99)
+average_incidents_00_14<-mean(incidents_00_14)
+print(average_incidents_00_14)
+
+airlines_with_below_average_incidents_85_99<-airlines_accident_data[airlines_accident_data$incidents_85_99 < average_incidents_85_99, ]
+head(airlines_with_below_average_incidents_85_99)
+print(nrow(airlines_with_below_average_incidents_85_99))
+
+#We now know that 40 out of the 56 airlines had below average incident numbers between 1985 & 1999
+
+airlines_with_below_average_incidents_00_14<-airlines_accident_data[airlines_accident_data$incidents_00_14<average_incidents_00_14, ]
+head(airlines_with_below_average_incidents_00_14)
+print(nrow(airlines_with_below_average_incidents_00_14))
+```
+
+We now know that 40 out of the 56 airlines had below average incident numbers between 1985 & 1999
+
+Now let's see how this number changed in the 2000-2014 era.
+
+```{r, echo=TRUE}
+airlines_with_below_average_incidents_00_14<-airlines_accident_data[airlines_accident_data$incidents_00_14<average_incidents_00_14, ]
+head(airlines_with_below_average_incidents_00_14)
+print(nrow(airlines_with_below_average_incidents_00_14))
+
+```
+
+Now we understand that the number of airlines having above average incidents dropped by 10% when we compare the two periods, which speaks to the improving safety of air travel in general.
+
+Now let us summarize our data:
+
+```{r,echo=TRUE}
+print("Summary of average weekly distance:")
+summary(weekly_distance_travelled)
+print("Summary of number of incidents in 1985-99 time period:")
+summary(incidents_85_99)
+print("Summary of number of fatal incidents in 1985-99 time period:")
+summary(fatal_incidents_85_99)
+print("Summary of number of fatalities in 1985-99 time period:")
+summary(fatalities_85_99)
+print("Summary of number of incidents in 2000-14 time period:")
+summary(incidents_00_14)
+print("Summary of number of fatal incidents in 2000-14 time period:")
+summary(fatal_incidents_00_14)
+print("Summary of number of fatalities in 2000-14 time period:")
+summary(fatalities_00_14)
+```
+
+Now that we have the summary, one very interesting thing we can do is divide it by the categorical variable airline, where we separate those airlines with regional subsidiaries and those without them.
+
+```{r, echo=TRUE}
+airlines_with_regional_subsidiaries<- subset(airlines_accident_data, grepl("\\*", airlines_accident_data$airline))
+head(airlines_with_regional_subsidiaries)
+
+non_regional_subsidiary_airlines<- subset(airlines_accident_data, !grepl("\\*", airlines_accident_data$airline))
+```
+
+One thing that we should use to understand the variability of distance traveled for the two different groups is a box plot. Using those, we can compare the two groups and also find any outliers in our data.
+
+```{r, echo=TRUE}
+weekly_distance_travelled<-weekly_distance_travelled/1000000000
+
+options(scipen=999)
+boxplot(non_regional_subsidiary_airlines$avail_seat_km_per_week/1000000000, main = "Variability of distance travelled for airlines without regional subsidiaries", ylab="Weekly Distance(billion km)")
+
+boxplot(airlines_with_regional_subsidiaries$avail_seat_km_per_week/1000000000, main="Variability of distance travelled For Airlines with regional subsidiaries", ylab = "Weekly Distance(billion km)")
+```
+
+Turns out, airlines with regional subsidiaries travel way more than airlines without subsidiaries on average. That was expected, but what was unexpected is the degree to which the numbers differ. The average is near 3 times more for airlines with regional subsidiaries than for airlines without them.
+
+Let's see how the airlines with and without regional subsidiaries changed when it comes to number of instances over the years.
+
+```{r, echo=TRUE}
+options(scipen=999)
+boxplot(non_regional_subsidiary_airlines$incidents_85_99, main = "Variability of instances in 1985-99 for non-regional subsidiary airlines", ylab="Number of instances")
+
+boxplot(airlines_with_regional_subsidiaries$incidents_85_99, main="Variability of instances in 1985-99 for airlines with regional subsidiaries", ylab = "Number of instances")
+
+boxplot(non_regional_subsidiary_airlines$incidents_00_14, main = "Variability of instances in 2000-14 for non-regional subsidiary airlines", ylab="Number of instances")
+
+boxplot(airlines_with_regional_subsidiaries$incidents_00_14, main="Variability of instances in 2000-14 for airlines with regional subsidiaries", ylab = "Number of instances")
+```
+
+As you can see, while the numbers did fall for both categories, airlines with regional subsidiaries still have a much higher incidents rate than those without them. This might just be because of the fact that airlines with regional subsidiaries travel more, but it also might be because bigger airline infrastructures tend to be inefficient and harder to manage. What is the bigger reason? We will find out soon.
+
+Now let's aggregate the two to see a total change in performance for airlines:
+
+```{r, echo=TRUE}
+boxplot(incidents_85_99, main="Number of Incidents 1985-99", ylab = "Number Of Incidents")
+boxplot(incidents_00_14, main="Number of Incidents 2000-14", ylab = "Number Of Incidents")
+```
+
+We can see that the number of incidents over the two periods show a drastic drop in the number of incidents, showing the improving safety of air travel. Let's see if similar trends occur in fatal incidents and fatalities as well
+
+```{r, echo=TRUE}
+boxplot(fatal_incidents_85_99, main="Number of Fatal Incidents 1985-99", ylab = "Fatal Incidents")
+
+boxplot(fatal_incidents_00_14, main="Number of Fatal Incidents 2000-14", ylab = "Fatal Incidents")
+
+#Now with the number of fatalities:
+
+boxplot(fatalities_85_99, main="Number of Fatalities 1985-99", ylab = "Fatalities")
+
+boxplot(fatalities_00_14, main="Number of Fatalities 2000-14", ylab = "Fatalities")
+
+
+```
+
+```{r, echo=TRUE}
+incidents_collective <-data.frame(Airline = airlines_accident_data$airline, incidents_85_99, incidents_00_14)
+
+head(incidents_collective)
+
+tail(incidents_collective)
+```
+
+Now, let's see the how many airlines have zero, one or more fatal incidents. This code was written by ChatGPT:
+
+```{r, echo=TRUE}
+fatal_accident_counts_85_99 <- table(cut(airlines_accident_data$fatal_accidents_85_99, 
+                          breaks = c(-Inf, 0, 1, Inf), 
+                          labels = c("Zero Incidents", "One Incident", "More than One Incident")))
+
+fatal_accident_counts_00_14 <- table(cut(airlines_accident_data$fatal_accidents_00_14, 
+                          breaks = c(-Inf, 0, 1, Inf), 
+                          labels = c("Zero Incidents", "One Incident", "More than One Incident")))
+
+par(mfrow = c(1, 2))  # Set the layout to have two plots side by side
+barplot(fatal_accident_counts_85_99, 
+        main = "1985-1999",
+        xlab = "Fatal Accidents",
+        ylab = "Number of Airlines",
+        col = c("skyblue", "lightgreen", "salmon"),
+        legend.text = TRUE)
+barplot(fatal_accident_counts_00_14, 
+        main = "2000-2014",
+        xlab = "Fatal Accidents",
+        ylab = "Number of Airlines",
+        col = c("skyblue", "lightgreen", "salmon"),
+        legend.text = TRUE)
+```
+
+We see the number of airlines with zero fatal incidents increase drastically, and the number of airlines with multiple fatal incidents drop.
+
+Now, let's see how the data correlates within itself, particularly if there is a correlation between the average miles and the number of incidents and fatalities.
+
+```{r, echo=TRUE}
+correlation_between_miles_and_incidents_85_99<-cor(weekly_distance_travelled, incidents_85_99)
+correlation_between_miles_and_incidents_00_14<-cor(weekly_distance_travelled, incidents_00_14)
+print(correlation_between_miles_and_incidents_85_99)
+print(correlation_between_miles_and_incidents_00_14)
+```
+
+An interesting, yet counter-intuitive result is discovered, in the sense that at a latter stage in time, there is a much stronger correlation between the number of miles traveled and the number of incidents. Let's see if fatal incidents follow the same trend.
+
+```{r, echo=TRUE}
+
+miles_and_fatal_incidents_85_99<-cor(weekly_distance_travelled, fatal_incidents_85_99)
+miles_and_fatal_incidents_00_14<-cor(weekly_distance_travelled, fatal_incidents_00_14)
+print(miles_and_fatal_incidents_85_99)
+print(miles_and_fatal_incidents_00_14)
+```
+
+We see a different story altogether, as there is a drop in correlation between miles and fatal incidents as time passes, which is expected.
+
+Essentially, while the added kilometers are correlating to more incidents as we go forward in time, they're leading to much less fatal incidents as time goes on, which is a testament to improving air travel safety.
+
+Now let's try to make some scatter plots to understand how miles affect incidents:
+
+```{r, echo=TRUE}
+plot(airlines_accident_data$avail_seat_km_per_week/1000000000, airlines_accident_data$incidents_85_99, 
+     xlab = "Available Seat Kilometers per Week (bn)",
+     ylab = "Incident Counts",
+     main = "Relationship between Incidents and Seat Kilometers (1985-1999)",
+     col = "blue")
+
+# Create a scatter plot for the time period 2000-2014
+plot(airlines_accident_data$avail_seat_km_per_week/1000000000, airlines_accident_data$incidents_00_14, 
+     xlab = "Available Seat Kilometers per Week (bn)",
+     ylab = "Incident Counts",
+     main = "Relationship between Incidents and Seat Kilometers (2000-2014)",
+     col = "red")
+```
+
+## Stories Regarding Data:
+
+I did find a story related to this exact data frame on the github profile, here's the link: <https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/>
+
+# Questions & Answers using Hypothesis Testing & PDA:
+
+After this analysis, a number of questions arise, which could be answered with our data.
+
+1.  ***Do airlines with higher average capacity have higher average incident rate in comparison to those with lower average capacity? Are there any outliers that prove otherwise?***\
+    \
+    The first test we're going to run is gonna be about if airlines with higher capacity get higher incident rates compared to airlines with low capacity in the 2000-2014 time period. Our null hypothesis is going to be that there is no difference in average incident numbers on average between the airlines with higher or lower capacities. Our alternate hypothesis is that there is a direct relationship between the capacity and incident rate. Under the null hypothesis, the reference distribution follows a t-distribution. We are gonna go for a two-sample t-test to compare the average incident rates between airlines with low and high capacities.
+
+    Firstly, we're gonna use the average capacity to divide the data into small capacity airlines and large capacity airlines.\
+
+    ```{r, echo=TRUE}
+    library(sjmisc)
+    library(stringr)
+    library(tidyverse)
+    library(magrittr)
+    library(ggplot2)
+    library(dplyr)
+
+    airlines_accident_data <-read.csv("airline-safety.csv")
+    head(airlines_accident_data)
+    ```
+
+    Now that we have our data, we can use it for hypothesis testing.
+
+    The first test we're going to run is gonna be about if airlines with higher capacity get higher incident rates compared to airlines with low capacity in the 2000-2014 time period.
+
+    Our **null hypothesis** is going to be that there is no difference in average incident numbers on average between the airlines with higher or lower capacities.
+
+    Our **alternate hypothesis** is that there is a direct relationship between the capacity and incident rate.
+
+    Under the null hypothesis, the reference distribution follows a **t-distribution**.
+
+    We are gonna go for a **two-sample t-test** to compare the average incident rates between airlines with low and high capacities.
+
+    Firstly, we're gonna use the average capacity to divide the data into small capacity airlines and large capacity airlines.
+
+    ```{r, echo=TRUE}
+    median_capacity<-median(airlines_accident_data$avail_seat_km_per_week)
+    median_capacity
+
+    higher_capacity<-airlines_accident_data%>%filter(avail_seat_km_per_week>median_capacity)
+    nrow(higher_capacity)
+    lower_capacity<-airlines_accident_data%>%filter(avail_seat_km_per_week<=median_capacity)
+    nrow(lower_capacity)
+    ```
+
+    We understand that the median capacity is 802908893. Moreover, there is an equal number of airlines above and below the median.
+
+    Using the median instead of the mean to stop outliers from disrupting the data. Now, it's time for the t-test.
+
+    ```{r, echo=TRUE}
+    t_test_result<-t.test(higher_capacity$incidents_00_14, lower_capacity$incidents_00_14)
+    print(t_test_result)
+    ```
+
+    Considering the small p-value of 0.006049, which is much smaller than the significance level of 0.05, we can safely **reject the null hypothesis**, and suggest that airlines with **higher capacity do tend to have higher number of incidents.**
+
+2.  ***Do airlines with regional subsidiaries behave the same way as other airlines when it comes to the relationship between miles and incidents?***
+
+    Null Hypothesis: The correlation coefficient between miles flown and incidents is the same for airlines with regional subsidiaries and other airlines in 2000-2014 era.
+
+    Alternate Hypothesis: The correlation coefficient between miles flown and incidents is different for airlines with regional subsidiaries compared to other airlines in the 2000-2014 era.
+
+    Test Statistic: Difference between correlation coefficients
+
+    Reference Distribution: Under the null hypothesis, the test statistic follows an approximate normal distribution.
+
+    Rejection Criteria: We reject the null hypothesis if the p-value is less than 0.05.\
+
+    ```{r, echo=TRUE}
+    # Calculate the correlation coefficients for each group
+    cor_sub <- cor(airlines_with_regional_subsidiaries$avail_seat_km_per_week, airlines_with_regional_subsidiaries$incidents_00_14)
+    cor_other <- cor(non_regional_subsidiary_airlines$avail_seat_km_per_week, non_regional_subsidiary_airlines$incidents_00_14)
+
+    # Print the correlation coefficients
+    print("Correlation coefficient for airlines with regional subsidiaries:")
+    print(cor_sub)
+    print("Correlation coefficient for other airlines:")
+    print(cor_other)
+
+    # Perform Fisher's z transformation to compare correlation coefficients
+    z_sub <- 0.5 * log((1 + cor_sub) / (1 - cor_sub))
+    z_other <- 0.5 * log((1 + cor_other) / (1 - cor_other))
+
+    # Calculate the difference in Fisher z scores
+    z_diff <- z_sub - z_other
+
+    # Compute the standard error of the difference
+    se_diff <- sqrt(1 / (nrow(airlines_with_regional_subsidiaries) - 3) + 1 / (nrow(non_regional_subsidiary_airlines) - 3))
+
+    # Calculate the test statistic
+    test_statistic <- z_diff / se_diff
+
+    # Calculate the p-value
+    p_value <- 2 * (1 - pnorm(abs(test_statistic)))
+
+    # Print the test statistic and p-value
+    print("Test Statistic:")
+    print(test_statistic)
+    print("P-Value:")
+    print(p_value)
+    ```
+
+    Considering that the p-value is below the threshold, we reject the null hypothesis and conclude that the correlation between incidents and miles are different for airlines with and without subsidiaries.
+
+3.  ***Is there a correlation between the number of incidents an airline experiences and the number of fatalities those incidents cause?***
+
+    ```{r, echo=TRUE}
+    # Calculate the correlation coefficient between incidents and fatalities
+    correlation <- cor(airlines_accident_data$incidents_85_99 + airlines_accident_data$incidents_00_14, 
+                       airlines_accident_data$fatalities_85_99 + airlines_accident_data$fatalities_00_14)
+
+    # Print the correlation coefficient
+    print(correlation)
+    ```
+
+    Considering the value, we can point towards a moderate positive correlation between the incidents and fatalities.
+
+4.  ***What number of variables contribute the most to the overall variability in incidents, fatal accidents, and fatalities across airlines and time periods?***
+
+    To answer this question, our best bet is to use the Principal Component Analysis.
+
+    ```{r, echo=TRUE}
+    # Select the relevant variables for PCA
+    data_for_pca <- airlines_accident_data[, c("incidents_85_99", "fatal_accidents_85_99", "fatalities_85_99", 
+                                     "incidents_00_14", "fatal_accidents_00_14", "fatalities_00_14")]
+
+    # Perform PCA
+    pca_result <- prcomp(data_for_pca, scale. = TRUE)
+
+    # Summary of PCA
+    summary(pca_result)
+    ```
+
+    Based on these results, the first few principal components (PC1 to PC4) explain the majority of the variability in the data, with PC1 being the most important in terms of variance explained. These principal components likely represent the main patterns or structures in the dataset related to incidents, fatal accidents, and fatalities across airlines and time periods
+
+5.  ***Did all airlines statistically improve their safety levels in time? Were the outliers? What was different about them?***
+
+    In order to find out if all airlines improved their safety levels over time statistically, we use the paired t-test on each individual airline and then see aggregate the results into one single integer that shows how many airlines showed a significant increase in safety related incidents.
+
+    Our null hypothesis is that there is no statistical worsening of the safety statistics over time.
+
+    Our alternate hypothesis is that there is significant worsening in at least one safety statistic.
+
+    Our test statistic for each paired t-test is calculated based on the differences between the safety-related variables (e.g., incidents, fatal accidents, fatalities) in the two time periods (1985-1999 and 2000-2014) for each airline. The test statistic measures the magnitude of the difference in means between the paired observations and is used to assess whether this difference is statistically significant.
+
+    Our rejection criteria is a p-value less than 0.05.
+
+    ```{r, echo=TRUE}
+    # Perform paired t-test for each airline
+    t_test_results <- apply(airlines_accident_data[, c("incidents_85_99", "fatal_accidents_85_99", "fatalities_85_99","incidents_00_14", "fatal_accidents_00_14", "fatalities_00_14")], 1, function(row) {t.test(row[c("incidents_85_99", "fatal_accidents_85_99", "fatalities_85_99")], row[c("incidents_00_14", "fatal_accidents_00_14", "fatalities_00_14")], paired = TRUE)})
+    # Extract p-values from the test results
+    p_values <- sapply(t_test_results, function(result) result$p.value)
+
+    # Identify outliers based on p-values
+    outliers <- which(p_values < 0.05)  # You can adjust the significance level as needed
+
+    # Print outliers
+    print(outliers)
+    ```
+
+    Turns out, no airline became statistically worse in terms of safety, considering that our t-tests gave us above 0.05 p-value for all airlines.
+
+# Conclusion:
+
+We drew a number of eventual conclusion with this study. To summarize:
+
+-   Air travel has gotten safer as time has passed, and there is no proof to show that it would grow worse (No airline went statistically worse over time)
+
+-   The airlines with more average capacity had higher number of incidents in both eras, but since there was no information on rate of incidents available, we cannot conclude that the airlines with more average capacity are riskier. All we can say is that the more airlines have traveled, the more incidents they've had.
+
+-   Airlines with regional subsidiaries have a different correlation between number of incidents in 2000-2014 and number of miles when compared to the airlines without regional subsidiaries.
+
+-   Our data set has aggregated airlines with their regional subsidiaries, which limits our understanding of each subsidiary.
+
+-   Since we only have two time-periods of 15 years each, we don't really have any annual or weekly data which we could use to get to the rate of incidents etc. Since we can't have number of incidents per mile, we can't really see how likely an incident is to happen over a particular flight from a particular airline.

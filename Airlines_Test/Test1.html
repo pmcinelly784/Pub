@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Muhammad Aetazaz Siddiqi">
+<meta name="dcterms.date" content="2024-03-09">
+
+<title>Project Proposal Muhammad Aetazaz Siddiqi ISE 201</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Test1_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Test1_files/libs/quarto-html/quarto.js"></script>
+<script src="Test1_files/libs/quarto-html/popper.min.js"></script>
+<script src="Test1_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Test1_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Test1_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Test1_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Test1_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Test1_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Test1_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Project Proposal Muhammad Aetazaz Siddiqi ISE 201</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Muhammad Aetazaz Siddiqi </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 9, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="project-details" class="level1">
+<h1>Project Details:</h1>
+<p>We used this data (airlines safety) because it had one categorical variable “airline” &amp; 7 numerical variables, which I can use to answer the question of which airline happens to be most dangerous to fly with. Note that it’s not just the one with the most fatal incidents, but the one for whom the fatal incidents and traveled miles ratio is the highest.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"pacman"</span>)) <span class="fu">install.packages</span>(<span class="st">"pacman"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: pacman</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">p_load</span>(sjmisc, stringr, tidyverse, </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>       magrittr, ggplot2)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>airlines_accident_data <span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"airline-safety.csv"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(airlines_accident_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                airline avail_seat_km_per_week incidents_85_99
+1            Aer Lingus              320906734               2
+2             Aeroflot*             1197672318              76
+3 Aerolineas Argentinas              385803648               6
+4           Aeromexico*              596871813               3
+5            Air Canada             1865253802               2
+6            Air France             3004002661              14
+  fatal_accidents_85_99 fatalities_85_99 incidents_00_14 fatal_accidents_00_14
+1                     0                0               0                     0
+2                    14              128               6                     1
+3                     0                0               1                     0
+4                     1               64               5                     0
+5                     0                0               2                     0
+6                     4               79               6                     2
+  fatalities_00_14
+1                0
+2               88
+3                0
+4                0
+5                0
+6              337</code></pre>
+</div>
+</div>
+<section id="data-details" class="level2">
+<h2 class="anchored" data-anchor-id="data-details">Data Details</h2>
+<section id="source" class="level3">
+<h3 class="anchored" data-anchor-id="source">Source</h3>
+<p>I got this data from here: <a href="https://github.com/fivethirtyeight/data/blob/master/airline-safety/README.md" class="uri">https://github.com/fivethirtyeight/data/blob/master/airline-safety/README.md</a></p>
+<p>However, the real source for this data is the Aviation Safety Network, which can be found here: <a href="https://aviation-safety.net/" class="uri">https://aviation-safety.net/</a></p>
+</section>
+<section id="variables" class="level3">
+<h3 class="anchored" data-anchor-id="variables">Variables:</h3>
+<p>The rows represent each airline, while the columns description is as follows:</p>
+<p><code>airline</code> | Airline (asterisk indicates that regional subsidiaries are included)</p>
+<p><code>avail_seat_km_per_week</code> | Available seat kilometers flown every week</p>
+<p><code>incidents_85_99</code> | Total number of incidents, 1985–1999</p>
+<p><code>fatal_accidents_85_99</code> | Total number of fatal accidents, 1985–1999</p>
+<p><code>fatalities_85_99</code> | Total number of fatalities, 1985–1999</p>
+<p><code>incidents_00_14</code> | Total number of incidents, 2000–2014</p>
+<p><code>fatal_accidents_00_14</code> | Total number of fatal accidents, 2000–2014</p>
+<p><code>fatalities_00_14</code> | Total number of fatalities, 2000–2014</p>
+<p>The study itself was purely observational. No passengers or crew members were hurt in the name of scientific experiments (probably).</p>
+</section>
+</section>
+</section>
+<section id="exploratory-data-analysis-eda" class="level1">
+<h1>Exploratory Data Analysis (EDA):</h1>
+<p>Now let’s check for the missing values:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>missing_values <span class="ot">&lt;-</span> <span class="fu">is.na</span>(airlines_accident_data)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the number of missing values in each column</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>missing_count <span class="ot">&lt;-</span> <span class="fu">colSums</span>(missing_values)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Total number of missing values in the data frame</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>total_missing <span class="ot">&lt;-</span> <span class="fu">sum</span>(missing_count)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the results</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Missing values in each column:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Missing values in each column:"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(missing_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               airline avail_seat_km_per_week        incidents_85_99 
+                     0                      0                      0 
+ fatal_accidents_85_99       fatalities_85_99        incidents_00_14 
+                     0                      0                      0 
+ fatal_accidents_00_14       fatalities_00_14 
+                     0                      0 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Total missing values:"</span>, total_missing))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Total missing values: 0"</code></pre>
+</div>
+</div>
+<p>Now that we understand that there are no missing values, we can start working on the exploratory data analysis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>weekly_distance_travelled<span class="ot">&lt;-</span> airlines_accident_data<span class="sc">$</span>avail_seat_km_per_week</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>incidents_85_99<span class="ot">&lt;-</span> airlines_accident_data<span class="sc">$</span>incidents_85_99</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>fatal_incidents_85_99<span class="ot">&lt;-</span>airlines_accident_data<span class="sc">$</span>fatal_accidents_85_99</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>fatalities_85_99<span class="ot">&lt;-</span>airlines_accident_data<span class="sc">$</span>fatalities_85_99</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>incidents_00_14<span class="ot">&lt;-</span>airlines_accident_data<span class="sc">$</span>incidents_00_14</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>fatal_incidents_00_14<span class="ot">&lt;-</span>airlines_accident_data<span class="sc">$</span>fatal_accidents_00_14</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>fatalities_00_14<span class="ot">&lt;-</span>airlines_accident_data<span class="sc">$</span>fatalities_00_14</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">nrow</span>(airlines_accident_data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 56</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>average_fatal_incidents_85_99<span class="ot">&lt;-</span><span class="fu">mean</span>(fatal_incidents_85_99)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(average_fatal_incidents_85_99)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.178571</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>average_fatal_incidents_00_14<span class="ot">&lt;-</span><span class="fu">mean</span>(fatal_incidents_00_14)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(average_fatal_incidents_00_14)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6607143</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>average_incidents_85_99<span class="ot">&lt;-</span><span class="fu">mean</span>(incidents_85_99)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(average_incidents_85_99)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.178571</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>average_incidents_00_14<span class="ot">&lt;-</span><span class="fu">mean</span>(incidents_00_14)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(average_incidents_00_14)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.125</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>airlines_with_below_average_incidents_85_99<span class="ot">&lt;-</span>airlines_accident_data[airlines_accident_data<span class="sc">$</span>incidents_85_99 <span class="sc">&lt;</span> average_incidents_85_99, ]</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(airlines_with_below_average_incidents_85_99)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                airline avail_seat_km_per_week incidents_85_99
+1            Aer Lingus              320906734               2
+3 Aerolineas Argentinas              385803648               6
+4           Aeromexico*              596871813               3
+5            Air Canada             1865253802               2
+7            Air India*              869253552               2
+8      Air New Zealand*              710174817               3
+  fatal_accidents_85_99 fatalities_85_99 incidents_00_14 fatal_accidents_00_14
+1                     0                0               0                     0
+3                     0                0               1                     0
+4                     1               64               5                     0
+5                     0                0               2                     0
+7                     1              329               4                     1
+8                     0                0               5                     1
+  fatalities_00_14
+1                0
+3                0
+4                0
+5                0
+7              158
+8                7</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">nrow</span>(airlines_with_below_average_incidents_85_99))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 40</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#We now know that 40 out of the 56 airlines had below average incident numbers between 1985 &amp; 1999</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>airlines_with_below_average_incidents_00_14<span class="ot">&lt;-</span>airlines_accident_data[airlines_accident_data<span class="sc">$</span>incidents_00_14<span class="sc">&lt;</span>average_incidents_00_14, ]</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(airlines_with_below_average_incidents_00_14)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 airline avail_seat_km_per_week incidents_85_99
+1             Aer Lingus              320906734               2
+3  Aerolineas Argentinas              385803648               6
+5             Air Canada             1865253802               2
+7             Air India*              869253552               2
+10              Alitalia              698012498               7
+13     Austrian Airlines              358239823               1
+   fatal_accidents_85_99 fatalities_85_99 incidents_00_14 fatal_accidents_00_14
+1                      0                0               0                     0
+3                      0                0               1                     0
+5                      0                0               2                     0
+7                      1              329               4                     1
+10                     2               50               4                     0
+13                     0                0               1                     0
+   fatalities_00_14
+1                 0
+3                 0
+5                 0
+7               158
+10                0
+13                0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">nrow</span>(airlines_with_below_average_incidents_00_14))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 36</code></pre>
+</div>
+</div>
+<p>We now know that 40 out of the 56 airlines had below average incident numbers between 1985 &amp; 1999</p>
+<p>Now let’s see how this number changed in the 2000-2014 era.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>airlines_with_below_average_incidents_00_14<span class="ot">&lt;-</span>airlines_accident_data[airlines_accident_data<span class="sc">$</span>incidents_00_14<span class="sc">&lt;</span>average_incidents_00_14, ]</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(airlines_with_below_average_incidents_00_14)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 airline avail_seat_km_per_week incidents_85_99
+1             Aer Lingus              320906734               2
+3  Aerolineas Argentinas              385803648               6
+5             Air Canada             1865253802               2
+7             Air India*              869253552               2
+10              Alitalia              698012498               7
+13     Austrian Airlines              358239823               1
+   fatal_accidents_85_99 fatalities_85_99 incidents_00_14 fatal_accidents_00_14
+1                      0                0               0                     0
+3                      0                0               1                     0
+5                      0                0               2                     0
+7                      1              329               4                     1
+10                     2               50               4                     0
+13                     0                0               1                     0
+   fatalities_00_14
+1                 0
+3                 0
+5                 0
+7               158
+10                0
+13                0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">nrow</span>(airlines_with_below_average_incidents_00_14))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 36</code></pre>
+</div>
+</div>
+<p>Now we understand that the number of airlines having above average incidents dropped by 10% when we compare the two periods, which speaks to the improving safety of air travel in general.</p>
+<p>Now let us summarize our data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Summary of average weekly distance:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Summary of average weekly distance:"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(weekly_distance_travelled)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+2.594e+08 4.740e+08 8.029e+08 1.385e+09 1.847e+09 7.139e+09 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Summary of number of incidents in 1985-99 time period:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Summary of number of incidents in 1985-99 time period:"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(incidents_85_99)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   2.000   4.000   7.179   8.000  76.000 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Summary of number of fatal incidents in 1985-99 time period:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Summary of number of fatal incidents in 1985-99 time period:"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fatal_incidents_85_99)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   0.000   1.000   2.179   3.000  14.000 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Summary of number of fatalities in 1985-99 time period:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Summary of number of fatalities in 1985-99 time period:"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fatalities_85_99)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    0.0     0.0    48.5   112.4   184.2   535.0 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Summary of number of incidents in 2000-14 time period:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Summary of number of incidents in 2000-14 time period:"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(incidents_00_14)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   1.000   3.000   4.125   5.250  24.000 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Summary of number of fatal incidents in 2000-14 time period:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Summary of number of fatal incidents in 2000-14 time period:"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fatal_incidents_00_14)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0000  0.0000  0.0000  0.6607  1.0000  3.0000 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Summary of number of fatalities in 2000-14 time period:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Summary of number of fatalities in 2000-14 time period:"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fatalities_00_14)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00    0.00    0.00   55.52   83.25  537.00 </code></pre>
+</div>
+</div>
+<p>Now that we have the summary, one very interesting thing we can do is divide it by the categorical variable airline, where we separate those airlines with regional subsidiaries and those without them.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>airlines_with_regional_subsidiaries<span class="ot">&lt;-</span> <span class="fu">subset</span>(airlines_accident_data, <span class="fu">grepl</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">*"</span>, airlines_accident_data<span class="sc">$</span>airline))</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(airlines_with_regional_subsidiaries)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            airline avail_seat_km_per_week incidents_85_99
+2         Aeroflot*             1197672318              76
+4       Aeromexico*              596871813               3
+7        Air India*              869253552               2
+8  Air New Zealand*              710174817               3
+9  Alaska Airlines*              965346773               5
+12        American*             5228357340              21
+   fatal_accidents_85_99 fatalities_85_99 incidents_00_14 fatal_accidents_00_14
+2                     14              128               6                     1
+4                      1               64               5                     0
+7                      1              329               4                     1
+8                      0                0               5                     1
+9                      0                0               5                     1
+12                     5              101              17                     3
+   fatalities_00_14
+2                88
+4                 0
+7               158
+8                 7
+9                88
+12              416</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>non_regional_subsidiary_airlines<span class="ot">&lt;-</span> <span class="fu">subset</span>(airlines_accident_data, <span class="sc">!</span><span class="fu">grepl</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">*"</span>, airlines_accident_data<span class="sc">$</span>airline))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>One thing that we should use to understand the variability of distance traveled for the two different groups is a box plot. Using those, we can compare the two groups and also find any outliers in our data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>weekly_distance_travelled<span class="ot">&lt;-</span>weekly_distance_travelled<span class="sc">/</span><span class="dv">1000000000</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen=</span><span class="dv">999</span>)</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(non_regional_subsidiary_airlines<span class="sc">$</span>avail_seat_km_per_week<span class="sc">/</span><span class="dv">1000000000</span>, <span class="at">main =</span> <span class="st">"Variability of distance travelled for airlines without regional subsidiaries"</span>, <span class="at">ylab=</span><span class="st">"Weekly Distance(billion km)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Test1_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(airlines_with_regional_subsidiaries<span class="sc">$</span>avail_seat_km_per_week<span class="sc">/</span><span class="dv">1000000000</span>, <span class="at">main=</span><span class="st">"Variability of distance travelled For Airlines with regional subsidiaries"</span>, <span class="at">ylab =</span> <span class="st">"Weekly Distance(billion km)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Test1_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Turns out, airlines with regional subsidiaries travel way more than airlines without subsidiaries on average. That was expected, but what was unexpected is the degree to which the numbers differ. The average is near 3 times more for airlines with regional subsidiaries than for airlines without them.</p>
+<p>Let’s see how the airlines with and without regional subsidiaries changed when it comes to number of instances over the years.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen=</span><span class="dv">999</span>)</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(non_regional_subsidiary_airlines<span class="sc">$</span>incidents_85_99, <span class="at">main =</span> <span class="st">"Variability of instances in 1985-99 for non-regional subsidiary airlines"</span>, <span class="at">ylab=</span><span class="st">"Number of instances"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Test1_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(airlines_with_regional_subsidiaries<span class="sc">$</span>incidents_85_99, <span class="at">main=</span><span class="st">"Variability of instances in 1985-99 for airlines with regional subsidiaries"</span>, <span class="at">ylab =</span> <span class="st">"Number of instances"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Test1_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(non_regional_subsidiary_airlines<span class="sc">$</span>incidents_00_14, <span class="at">main =</span> <span class="st">"Variability of instances in 2000-14 for non-regional subsidiary airlines"</span>, <span class="at">ylab=</span><span class="st">"Number of instances"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Test1_files/figure-html/unnamed-chunk-9-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(airlines_with_regional_subsidiaries<span class="sc">$</span>incidents_00_14, <span class="at">main=</span><span class="st">"Variability of instances in 2000-14 for airlines with regional subsidiaries"</span>, <span class="at">ylab =</span> <span class="st">"Number of instances"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Test1_files/figure-html/unnamed-chunk-9-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As you can see, while the numbers did fall for both categories, airlines with regional subsidiaries still have a much higher incidents rate than those without them. This might just be because of the fact that airlines with regional subsidiaries travel more, but it also might be because bigger airline infrastructures tend to be inefficient and harder to manage. What is the bigger reason? We will find out soon.</p>
+<p>Now let’s aggregate the two to see a total change in performance for airlines:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(incidents_85_99, <span class="at">main=</span><span class="st">"Number of Incidents 1985-99"</span>, <span class="at">ylab =</span> <span class="st">"Number Of Incidents"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Test1_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(incidents_00_14, <span class="at">main=</span><span class="st">"Number of Incidents 2000-14"</span>, <span class="at">ylab =</span> <span class="st">"Number Of Incidents"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Test1_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see that the number of incidents over the two periods show a drastic drop in the number of incidents, showing the improving safety of air travel. Let’s see if similar trends occur in fatal incidents and fatalities as well</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(fatal_incidents_85_99, <span class="at">main=</span><span class="st">"Number of Fatal Incidents 1985-99"</span>, <span class="at">ylab =</span> <span class="st">"Fatal Incidents"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Test1_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(fatal_incidents_00_14, <span class="at">main=</span><span class="st">"Number of Fatal Incidents 2000-14"</span>, <span class="at">ylab =</span> <span class="st">"Fatal Incidents"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Test1_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Now with the number of fatalities:</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(fatalities_85_99, <span class="at">main=</span><span class="st">"Number of Fatalities 1985-99"</span>, <span class="at">ylab =</span> <span class="st">"Fatalities"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Test1_files/figure-html/unnamed-chunk-11-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(fatalities_00_14, <span class="at">main=</span><span class="st">"Number of Fatalities 2000-14"</span>, <span class="at">ylab =</span> <span class="st">"Fatalities"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Test1_files/figure-html/unnamed-chunk-11-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>incidents_collective <span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="at">Airline =</span> airlines_accident_data<span class="sc">$</span>airline, incidents_85_99, incidents_00_14)</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(incidents_collective)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                Airline incidents_85_99 incidents_00_14
+1            Aer Lingus               2               0
+2             Aeroflot*              76               6
+3 Aerolineas Argentinas               6               1
+4           Aeromexico*               3               5
+5            Air Canada               2               2
+6            Air France              14               6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(incidents_collective)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      Airline incidents_85_99 incidents_00_14
+51           Turkish Airlines               8               8
+52      United / Continental*              19              14
+53 US Airways / America West*              16              11
+54           Vietnam Airlines               7               1
+55            Virgin Atlantic               1               0
+56            Xiamen Airlines               9               2</code></pre>
+</div>
+</div>
+<p>Now, let’s see the how many airlines have zero, one or more fatal incidents. This code was written by ChatGPT:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>fatal_accident_counts_85_99 <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="fu">cut</span>(airlines_accident_data<span class="sc">$</span>fatal_accidents_85_99, </span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="cn">Inf</span>), </span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Zero Incidents"</span>, <span class="st">"One Incident"</span>, <span class="st">"More than One Incident"</span>)))</span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a>fatal_accident_counts_00_14 <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="fu">cut</span>(airlines_accident_data<span class="sc">$</span>fatal_accidents_00_14, </span>
+<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a>                          <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="cn">Inf</span>), </span>
+<span id="cb80-7"><a href="#cb80-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Zero Incidents"</span>, <span class="st">"One Incident"</span>, <span class="st">"More than One Incident"</span>)))</span>
+<span id="cb80-8"><a href="#cb80-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-9"><a href="#cb80-9" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))  <span class="co"># Set the layout to have two plots side by side</span></span>
+<span id="cb80-10"><a href="#cb80-10" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(fatal_accident_counts_85_99, </span>
+<span id="cb80-11"><a href="#cb80-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"1985-1999"</span>,</span>
+<span id="cb80-12"><a href="#cb80-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Fatal Accidents"</span>,</span>
+<span id="cb80-13"><a href="#cb80-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Number of Airlines"</span>,</span>
+<span id="cb80-14"><a href="#cb80-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"skyblue"</span>, <span class="st">"lightgreen"</span>, <span class="st">"salmon"</span>),</span>
+<span id="cb80-15"><a href="#cb80-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb80-16"><a href="#cb80-16" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(fatal_accident_counts_00_14, </span>
+<span id="cb80-17"><a href="#cb80-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"2000-2014"</span>,</span>
+<span id="cb80-18"><a href="#cb80-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Fatal Accidents"</span>,</span>
+<span id="cb80-19"><a href="#cb80-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Number of Airlines"</span>,</span>
+<span id="cb80-20"><a href="#cb80-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"skyblue"</span>, <span class="st">"lightgreen"</span>, <span class="st">"salmon"</span>),</span>
+<span id="cb80-21"><a href="#cb80-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Test1_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We see the number of airlines with zero fatal incidents increase drastically, and the number of airlines with multiple fatal incidents drop.</p>
+<p>Now, let’s see how the data correlates within itself, particularly if there is a correlation between the average miles and the number of incidents and fatalities.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>correlation_between_miles_and_incidents_85_99<span class="ot">&lt;-</span><span class="fu">cor</span>(weekly_distance_travelled, incidents_85_99)</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>correlation_between_miles_and_incidents_00_14<span class="ot">&lt;-</span><span class="fu">cor</span>(weekly_distance_travelled, incidents_00_14)</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(correlation_between_miles_and_incidents_85_99)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2795383</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(correlation_between_miles_and_incidents_00_14)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7259167</code></pre>
+</div>
+</div>
+<p>An interesting, yet counter-intuitive result is discovered, in the sense that at a latter stage in time, there is a much stronger correlation between the number of miles traveled and the number of incidents. Let’s see if fatal incidents follow the same trend.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>miles_and_fatal_incidents_85_99<span class="ot">&lt;-</span><span class="fu">cor</span>(weekly_distance_travelled, fatal_incidents_85_99)</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>miles_and_fatal_incidents_00_14<span class="ot">&lt;-</span><span class="fu">cor</span>(weekly_distance_travelled, fatal_incidents_00_14)</span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(miles_and_fatal_incidents_85_99)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4682998</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(miles_and_fatal_incidents_00_14)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3756729</code></pre>
+</div>
+</div>
+<p>We see a different story altogether, as there is a drop in correlation between miles and fatal incidents as time passes, which is expected.</p>
+<p>Essentially, while the added kilometers are correlating to more incidents as we go forward in time, they’re leading to much less fatal incidents as time goes on, which is a testament to improving air travel safety.</p>
+<p>Now let’s try to make some scatter plots to understand how miles affect incidents:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(airlines_accident_data<span class="sc">$</span>avail_seat_km_per_week<span class="sc">/</span><span class="dv">1000000000</span>, airlines_accident_data<span class="sc">$</span>incidents_85_99, </span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Available Seat Kilometers per Week (bn)"</span>,</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Incident Counts"</span>,</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Relationship between Incidents and Seat Kilometers (1985-1999)"</span>,</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Test1_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a scatter plot for the time period 2000-2014</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(airlines_accident_data<span class="sc">$</span>avail_seat_km_per_week<span class="sc">/</span><span class="dv">1000000000</span>, airlines_accident_data<span class="sc">$</span>incidents_00_14, </span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Available Seat Kilometers per Week (bn)"</span>,</span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Incident Counts"</span>,</span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Relationship between Incidents and Seat Kilometers (2000-2014)"</span>,</span>
+<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Test1_files/figure-html/unnamed-chunk-16-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="stories-regarding-data" class="level2">
+<h2 class="anchored" data-anchor-id="stories-regarding-data">Stories Regarding Data:</h2>
+<p>I did find a story related to this exact data frame on the github profile, here’s the link: <a href="https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/" class="uri">https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/</a></p>
+</section>
+</section>
+<section id="questions-answers-using-hypothesis-testing-pda" class="level1">
+<h1>Questions &amp; Answers using Hypothesis Testing &amp; PDA:</h1>
+<p>After this analysis, a number of questions arise, which could be answered with our data.</p>
+<ol type="1">
+<li><p><strong><em>Do airlines with higher average capacity have higher average incident rate in comparison to those with lower average capacity? Are there any outliers that prove otherwise?</em></strong><br>
+<br>
+The first test we’re going to run is gonna be about if airlines with higher capacity get higher incident rates compared to airlines with low capacity in the 2000-2014 time period. Our null hypothesis is going to be that there is no difference in average incident numbers on average between the airlines with higher or lower capacities. Our alternate hypothesis is that there is a direct relationship between the capacity and incident rate. Under the null hypothesis, the reference distribution follows a t-distribution. We are gonna go for a two-sample t-test to compare the average incident rates between airlines with low and high capacities.</p>
+<p>Firstly, we’re gonna use the average capacity to divide the data into small capacity airlines and large capacity airlines.<br>
+</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sjmisc)</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb91-7"><a href="#cb91-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-8"><a href="#cb91-8" aria-hidden="true" tabindex="-1"></a>airlines_accident_data <span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"airline-safety.csv"</span>)</span>
+<span id="cb91-9"><a href="#cb91-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(airlines_accident_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                airline avail_seat_km_per_week incidents_85_99
+1            Aer Lingus              320906734               2
+2             Aeroflot*             1197672318              76
+3 Aerolineas Argentinas              385803648               6
+4           Aeromexico*              596871813               3
+5            Air Canada             1865253802               2
+6            Air France             3004002661              14
+  fatal_accidents_85_99 fatalities_85_99 incidents_00_14 fatal_accidents_00_14
+1                     0                0               0                     0
+2                    14              128               6                     1
+3                     0                0               1                     0
+4                     1               64               5                     0
+5                     0                0               2                     0
+6                     4               79               6                     2
+  fatalities_00_14
+1                0
+2               88
+3                0
+4                0
+5                0
+6              337</code></pre>
+</div>
+</div>
+<p>Now that we have our data, we can use it for hypothesis testing.</p>
+<p>The first test we’re going to run is gonna be about if airlines with higher capacity get higher incident rates compared to airlines with low capacity in the 2000-2014 time period.</p>
+<p>Our <strong>null hypothesis</strong> is going to be that there is no difference in average incident numbers on average between the airlines with higher or lower capacities.</p>
+<p>Our <strong>alternate hypothesis</strong> is that there is a direct relationship between the capacity and incident rate.</p>
+<p>Under the null hypothesis, the reference distribution follows a <strong>t-distribution</strong>.</p>
+<p>We are gonna go for a <strong>two-sample t-test</strong> to compare the average incident rates between airlines with low and high capacities.</p>
+<p>Firstly, we’re gonna use the average capacity to divide the data into small capacity airlines and large capacity airlines.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>median_capacity<span class="ot">&lt;-</span><span class="fu">median</span>(airlines_accident_data<span class="sc">$</span>avail_seat_km_per_week)</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>median_capacity</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 802908893</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>higher_capacity<span class="ot">&lt;-</span>airlines_accident_data<span class="sc">%&gt;%</span><span class="fu">filter</span>(avail_seat_km_per_week<span class="sc">&gt;</span>median_capacity)</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(higher_capacity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 28</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>lower_capacity<span class="ot">&lt;-</span>airlines_accident_data<span class="sc">%&gt;%</span><span class="fu">filter</span>(avail_seat_km_per_week<span class="sc">&lt;=</span>median_capacity)</span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(lower_capacity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 28</code></pre>
+</div>
+</div>
+<p>We understand that the median capacity is 802908893. Moreover, there is an equal number of airlines above and below the median.</p>
+<p>Using the median instead of the mean to stop outliers from disrupting the data. Now, it’s time for the t-test.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>t_test_result<span class="ot">&lt;-</span><span class="fu">t.test</span>(higher_capacity<span class="sc">$</span>incidents_00_14, lower_capacity<span class="sc">$</span>incidents_00_14)</span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(t_test_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  higher_capacity$incidents_00_14 and lower_capacity$incidents_00_14
+t = 2.9147, df = 36.5, p-value = 0.006049
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 1.011463 5.631394
+sample estimates:
+mean of x mean of y 
+ 5.785714  2.464286 </code></pre>
+</div>
+</div>
+<p>Considering the small p-value of 0.006049, which is much smaller than the significance level of 0.05, we can safely <strong>reject the null hypothesis</strong>, and suggest that airlines with <strong>higher capacity do tend to have higher number of incidents.</strong></p></li>
+<li><p><strong><em>Do airlines with regional subsidiaries behave the same way as other airlines when it comes to the relationship between miles and incidents?</em></strong></p>
+<p>Null Hypothesis: The correlation coefficient between miles flown and incidents is the same for airlines with regional subsidiaries and other airlines in 2000-2014 era.</p>
+<p>Alternate Hypothesis: The correlation coefficient between miles flown and incidents is different for airlines with regional subsidiaries compared to other airlines in the 2000-2014 era.</p>
+<p>Test Statistic: Difference between correlation coefficients</p>
+<p>Reference Distribution: Under the null hypothesis, the test statistic follows an approximate normal distribution.</p>
+<p>Rejection Criteria: We reject the null hypothesis if the p-value is less than 0.05.<br>
+</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the correlation coefficients for each group</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>cor_sub <span class="ot">&lt;-</span> <span class="fu">cor</span>(airlines_with_regional_subsidiaries<span class="sc">$</span>avail_seat_km_per_week, airlines_with_regional_subsidiaries<span class="sc">$</span>incidents_00_14)</span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>cor_other <span class="ot">&lt;-</span> <span class="fu">cor</span>(non_regional_subsidiary_airlines<span class="sc">$</span>avail_seat_km_per_week, non_regional_subsidiary_airlines<span class="sc">$</span>incidents_00_14)</span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the correlation coefficients</span></span>
+<span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Correlation coefficient for airlines with regional subsidiaries:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Correlation coefficient for airlines with regional subsidiaries:"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(cor_sub)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7826423</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Correlation coefficient for other airlines:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Correlation coefficient for other airlines:"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(cor_other)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3687599</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform Fisher's z transformation to compare correlation coefficients</span></span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>z_sub <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">log</span>((<span class="dv">1</span> <span class="sc">+</span> cor_sub) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> cor_sub))</span>
+<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a>z_other <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">log</span>((<span class="dv">1</span> <span class="sc">+</span> cor_other) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> cor_other))</span>
+<span id="cb109-4"><a href="#cb109-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-5"><a href="#cb109-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the difference in Fisher z scores</span></span>
+<span id="cb109-6"><a href="#cb109-6" aria-hidden="true" tabindex="-1"></a>z_diff <span class="ot">&lt;-</span> z_sub <span class="sc">-</span> z_other</span>
+<span id="cb109-7"><a href="#cb109-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-8"><a href="#cb109-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the standard error of the difference</span></span>
+<span id="cb109-9"><a href="#cb109-9" aria-hidden="true" tabindex="-1"></a>se_diff <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">/</span> (<span class="fu">nrow</span>(airlines_with_regional_subsidiaries) <span class="sc">-</span> <span class="dv">3</span>) <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="fu">nrow</span>(non_regional_subsidiary_airlines) <span class="sc">-</span> <span class="dv">3</span>))</span>
+<span id="cb109-10"><a href="#cb109-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-11"><a href="#cb109-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the test statistic</span></span>
+<span id="cb109-12"><a href="#cb109-12" aria-hidden="true" tabindex="-1"></a>test_statistic <span class="ot">&lt;-</span> z_diff <span class="sc">/</span> se_diff</span>
+<span id="cb109-13"><a href="#cb109-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-14"><a href="#cb109-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the p-value</span></span>
+<span id="cb109-15"><a href="#cb109-15" aria-hidden="true" tabindex="-1"></a>p_value <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="fu">abs</span>(test_statistic)))</span>
+<span id="cb109-16"><a href="#cb109-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-17"><a href="#cb109-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the test statistic and p-value</span></span>
+<span id="cb109-18"><a href="#cb109-18" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Test Statistic:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Test Statistic:"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(test_statistic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.06309</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"P-Value:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "P-Value:"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p_value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.03910412</code></pre>
+</div>
+</div>
+<p>Considering that the p-value is below the threshold, we reject the null hypothesis and conclude that the correlation between incidents and miles are different for airlines with and without subsidiaries.</p></li>
+<li><p><strong><em>Is there a correlation between the number of incidents an airline experiences and the number of fatalities those incidents cause?</em></strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the correlation coefficient between incidents and fatalities</span></span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a>correlation <span class="ot">&lt;-</span> <span class="fu">cor</span>(airlines_accident_data<span class="sc">$</span>incidents_85_99 <span class="sc">+</span> airlines_accident_data<span class="sc">$</span>incidents_00_14, </span>
+<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a>                   airlines_accident_data<span class="sc">$</span>fatalities_85_99 <span class="sc">+</span> airlines_accident_data<span class="sc">$</span>fatalities_00_14)</span>
+<span id="cb117-4"><a href="#cb117-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-5"><a href="#cb117-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the correlation coefficient</span></span>
+<span id="cb117-6"><a href="#cb117-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(correlation)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.396446</code></pre>
+</div>
+</div>
+<p>Considering the value, we can point towards a moderate positive correlation between the incidents and fatalities.</p></li>
+<li><p><strong><em>What number of variables contribute the most to the overall variability in incidents, fatal accidents, and fatalities across airlines and time periods?</em></strong></p>
+<p>To answer this question, our best bet is to use the Principal Component Analysis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the relevant variables for PCA</span></span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>data_for_pca <span class="ot">&lt;-</span> airlines_accident_data[, <span class="fu">c</span>(<span class="st">"incidents_85_99"</span>, <span class="st">"fatal_accidents_85_99"</span>, <span class="st">"fatalities_85_99"</span>, </span>
+<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"incidents_00_14"</span>, <span class="st">"fatal_accidents_00_14"</span>, <span class="st">"fatalities_00_14"</span>)]</span>
+<span id="cb119-4"><a href="#cb119-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform PCA</span></span>
+<span id="cb119-6"><a href="#cb119-6" aria-hidden="true" tabindex="-1"></a>pca_result <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(data_for_pca, <span class="at">scale. =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb119-7"><a href="#cb119-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb119-8"><a href="#cb119-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary of PCA</span></span>
+<span id="cb119-9"><a href="#cb119-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pca_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Importance of components:
+                          PC1    PC2    PC3     PC4     PC5     PC6
+Standard deviation     1.7627 1.1300 0.8599 0.77292 0.45409 0.27034
+Proportion of Variance 0.5178 0.2128 0.1232 0.09957 0.03437 0.01218
+Cumulative Proportion  0.5178 0.7307 0.8539 0.95345 0.98782 1.00000</code></pre>
+</div>
+</div>
+<p>Based on these results, the first few principal components (PC1 to PC4) explain the majority of the variability in the data, with PC1 being the most important in terms of variance explained. These principal components likely represent the main patterns or structures in the dataset related to incidents, fatal accidents, and fatalities across airlines and time periods</p></li>
+<li><p><strong><em>Did all airlines statistically improve their safety levels in time? Were the outliers? What was different about them?</em></strong></p>
+<p>In order to find out if all airlines improved their safety levels over time statistically, we use the paired t-test on each individual airline and then see aggregate the results into one single integer that shows how many airlines showed a significant increase in safety related incidents.</p>
+<p>Our null hypothesis is that there is no statistical worsening of the safety statistics over time.</p>
+<p>Our alternate hypothesis is that there is significant worsening in at least one safety statistic.</p>
+<p>Our test statistic for each paired t-test is calculated based on the differences between the safety-related variables (e.g., incidents, fatal accidents, fatalities) in the two time periods (1985-1999 and 2000-2014) for each airline. The test statistic measures the magnitude of the difference in means between the paired observations and is used to assess whether this difference is statistically significant.</p>
+<p>Our rejection criteria is a p-value less than 0.05.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform paired t-test for each airline</span></span>
+<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>t_test_results <span class="ot">&lt;-</span> <span class="fu">apply</span>(airlines_accident_data[, <span class="fu">c</span>(<span class="st">"incidents_85_99"</span>, <span class="st">"fatal_accidents_85_99"</span>, <span class="st">"fatalities_85_99"</span>,<span class="st">"incidents_00_14"</span>, <span class="st">"fatal_accidents_00_14"</span>, <span class="st">"fatalities_00_14"</span>)], <span class="dv">1</span>, <span class="cf">function</span>(row) {<span class="fu">t.test</span>(row[<span class="fu">c</span>(<span class="st">"incidents_85_99"</span>, <span class="st">"fatal_accidents_85_99"</span>, <span class="st">"fatalities_85_99"</span>)], row[<span class="fu">c</span>(<span class="st">"incidents_00_14"</span>, <span class="st">"fatal_accidents_00_14"</span>, <span class="st">"fatalities_00_14"</span>)], <span class="at">paired =</span> <span class="cn">TRUE</span>)})</span>
+<span id="cb121-3"><a href="#cb121-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract p-values from the test results</span></span>
+<span id="cb121-4"><a href="#cb121-4" aria-hidden="true" tabindex="-1"></a>p_values <span class="ot">&lt;-</span> <span class="fu">sapply</span>(t_test_results, <span class="cf">function</span>(result) result<span class="sc">$</span>p.value)</span>
+<span id="cb121-5"><a href="#cb121-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb121-6"><a href="#cb121-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify outliers based on p-values</span></span>
+<span id="cb121-7"><a href="#cb121-7" aria-hidden="true" tabindex="-1"></a>outliers <span class="ot">&lt;-</span> <span class="fu">which</span>(p_values <span class="sc">&lt;</span> <span class="fl">0.05</span>)  <span class="co"># You can adjust the significance level as needed</span></span>
+<span id="cb121-8"><a href="#cb121-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb121-9"><a href="#cb121-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print outliers</span></span>
+<span id="cb121-10"><a href="#cb121-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(outliers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>integer(0)</code></pre>
+</div>
+</div>
+<p>Turns out, no airline became statistically worse in terms of safety, considering that our t-tests gave us above 0.05 p-value for all airlines.</p></li>
+</ol>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion:</h1>
+<p>We drew a number of eventual conclusion with this study. To summarize:</p>
+<ul>
+<li><p>Air travel has gotten safer as time has passed, and there is no proof to show that it would grow worse (No airline went statistically worse over time)</p></li>
+<li><p>The airlines with more average capacity had higher number of incidents in both eras, but since there was no information on rate of incidents available, we cannot conclude that the airlines with more average capacity are riskier. All we can say is that the more airlines have traveled, the more incidents they’ve had.</p></li>
+<li><p>Airlines with regional subsidiaries have a different correlation between number of incidents in 2000-2014 and number of miles when compared to the airlines without regional subsidiaries.</p></li>
+<li><p>Our data set has aggregated airlines with their regional subsidiaries, which limits our understanding of each subsidiary.</p></li>
+<li><p>Since we only have two time-periods of 15 years each, we don’t really have any annual or weekly data which we could use to get to the rate of incidents etc. Since we can’t have number of incidents per mile, we can’t really see how likely an incident is to happen over a particular flight from a particular airline.</p></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
