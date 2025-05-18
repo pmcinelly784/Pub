@@ -14,9 +14,9 @@ pacman::p_load(tidyverse, scales, pander)
 # Loan parameters
 
 ```{r parameters, echo=FALSE}
-loan_amount <- 345000  # principal
-annual_rate <- 0.07125    # 6% annual interest
-years <- 30            # loan term
+loan_amount <- 345000
+annual_rate <- 0.07125
+years <- 30
 daily_rate <- annual_rate / 365
 params <- list(
   "Loan Amount" = scales::dollar(loan_amount),
@@ -26,7 +26,6 @@ params <- list(
 )
 
 extra_monthly_payment <- 2800
-# Use pander to print the list as a table
 pander::pander(params, caption = "Loan Parameters")
 ```
 
@@ -55,7 +54,6 @@ calc_steps <- data.frame(
   )
 )
 
-# Display with pander
 pander::pander(calc_steps, caption = "Monthly Mortgage Payment Calculation Steps")
 ```
 
@@ -91,9 +89,7 @@ while(balance_biweekly > 0) {
     balance_biweekly <- balance_biweekly + daily_interest
   }
   
-  # Optional: Add extra payments every month
   if (n_biweeks %% 2 == 0) {
-    # every ~month (every 2 bi-weekly periods), apply extra payment
     payment <- min(biweekly_payment + extra_monthly_payment, balance_biweekly)
   } else {
     payment <- min(biweekly_payment, balance_biweekly)
@@ -180,7 +176,6 @@ cat(" - Payoff Time:     ", n_extra_months, " months (", round(n_extra_months / 
 ```
 
 ```{r pander_summary, echo=FALSE}
-# Monthly Payments (Standard)
 monthly_summary <- data.frame(
   Metric = c("Payment", "Total Paid", "Total Interest", "Payoff Time"),
   Value = c(
@@ -192,7 +187,6 @@ monthly_summary <- data.frame(
 )
 pander(monthly_summary, caption = "Monthly Payments (Standard)")
 
-# Bi-Weekly Payments
 biweekly_summary <- data.frame(
   Metric = c("Payment", "Total Paid", "Total Interest", "Payoff Time"),
   Value = c(
@@ -204,7 +198,6 @@ biweekly_summary <- data.frame(
 )
 pander(biweekly_summary, caption = "Bi-Weekly Payments")
 
-# Monthly with Extra Payment
 extra_summary <- data.frame(
   Metric = c("Payment", "Total Paid", "Total Interest", "Payoff Time"),
   Value = c(
