@@ -1,0 +1,236 @@
+---
+title: "Payment Options"
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+editor: visual
+---
+
+```{r packages, include=FALSE}
+pacman::p_load(tidyverse, scales, pander)
+```
+
+# Loan parameters
+
+```{r parameters, echo=FALSE}
+loan_amount <- 345000  # principal
+annual_rate <- 0.07125    # 6% annual interest
+years <- 30            # loan term
+daily_rate <- annual_rate / 365
+params <- list(
+  "Loan Amount" = scales::dollar(loan_amount),
+  "Annual Interest Rate" = annual_rate,
+  "Loan Term (Years)" = years,
+  "Daily Interest Rate" = daily_rate
+)
+
+extra_monthly_payment <- 2800
+# Use pander to print the list as a table
+pander::pander(params, caption = "Loan Parameters")
+```
+
+# Monthly payment calculation
+
+```{r montlycalc, echo=FALSE}
+monthly_rate <- annual_rate / 12
+n_months <- years * 12
+monthly_payment <- loan_amount * (monthly_rate * (1 + monthly_rate)^n_months) / ((1 + monthly_rate)^n_months - 1)
+
+calc_steps <- data.frame(
+  Step = c(
+    "Monthly Interest Rate",
+    "Number of Monthly Payments",
+    "Monthly Payment"
+  ),
+  Formula = c(
+    "annual_rate / 12",
+    "years * 12",
+    "loan_amount * [monthly_rate * (1 + monthly_rate)^n_months] / [(1 + monthly_rate)^n_months - 1]"
+  ),
+  Result = c(
+    round(monthly_rate, 6),
+    n_months,
+    round(monthly_payment, 2)
+  )
+)
+
+# Display with pander
+pander::pander(calc_steps, caption = "Monthly Mortgage Payment Calculation Steps")
+```
+
+# Bi-weekly payment: half of monthly payment
+
+```{r include = FALSE}
+n_biweeks <- years * 26
+biweekly_rate <- annual_rate / 26
+biweekly_payment <- loan_amount * (biweekly_rate * (1 + biweekly_rate)^n_biweeks) / ((1 + biweekly_rate)^n_biweeks - 1)
+```
+
+$$\text{Bi-weekly Payment} = \frac{\text{Monthy Payment}}{2}$$
+
+```{r echo=FALSE}
+pander::pander(paste0('<h3 style="text-align:center;"> ',scales::dollar(biweekly_payment)," bi-weekly</h3>"))
+```
+
+### Bi-weekly simulation ###
+
+```{r biweek_sim}
+n_biweeks <- 0
+balance_biweekly <- loan_amount
+total_paid_biweekly <- 0
+total_interest_biweekly <- 0
+
+
+
+while(balance_biweekly > 0) {
+  interest <- 0
+  for (i in 1:14) {
+    daily_interest <- balance_biweekly * daily_rate
+    interest <- interest + daily_interest
+    balance_biweekly <- balance_biweekly + daily_interest
+  }
+  
+  # Optional: Add extra payments every month
+  if (n_biweeks %% 2 == 0) {
+    # every ~month (every 2 bi-weekly periods), apply extra payment
+    payment <- min(biweekly_payment + extra_monthly_payment, balance_biweekly)
+  } else {
+    payment <- min(biweekly_payment, balance_biweekly)
+  }
+  
+  balance_biweekly <- balance_biweekly - payment
+  total_paid_biweekly <- total_paid_biweekly + payment
+  total_interest_biweekly <- total_interest_biweekly + interest
+  n_biweeks <- n_biweeks + 1
+}
+
+```
+
+
+### Monthly simulation ###
+
+```{r monthly_sim}
+n_months_paid <- 0
+balance_monthly <- loan_amount
+total_paid_monthly <- 0
+total_interest_monthly <- 0
+
+while(balance_monthly > 0) {
+  days_in_month <- 30.44
+  interest <- 0
+  for (i in 1:round(days_in_month)) {
+    daily_interest <- balance_monthly * daily_rate
+    interest <- interest + daily_interest
+    balance_monthly <- balance_monthly + daily_interest
+  }
+  payment <- min(monthly_payment, balance_monthly)
+  balance_monthly <- balance_monthly - payment
+  total_paid_monthly <- total_paid_monthly + payment
+  total_interest_monthly <- total_interest_monthly + interest
+  n_months_paid <- n_months_paid + 1
+}
+```
+
+
+### Extra monthly payment simulation ```r pander::pander(scales::dollar(extra_monthly_payment))```
+
+```{r extra_monthly_sim}
+n_extra_months <- 0
+balance_extra <- loan_amount
+total_paid_extra <- 0
+total_interest_extra <- 0
+
+while(balance_extra > 0) {
+  days_in_month <- 30.44
+  interest <- 0
+  for (i in 1:round(days_in_month)) {
+    daily_interest <- balance_extra * daily_rate
+    interest <- interest + daily_interest
+    balance_extra <- balance_extra + daily_interest
+  }
+  payment <- min(extra_monthly_payment, balance_extra)
+  balance_extra <- balance_extra - payment
+  total_paid_extra <- total_paid_extra + payment
+  total_interest_extra <- total_interest_extra + interest
+  n_extra_months <- n_extra_months + 1
+}
+```
+
+### Summary Output ###
+
+```{r cat_summary, include=FALSE}
+cat("===== Monthly Payments (Standard) =====\n")
+cat(" - Payment:         $", round(monthly_payment, 2), "\n")
+cat(" - Total Paid:      $", round(total_paid_monthly, 2), "\n")
+cat(" - Total Interest:  $", round(total_interest_monthly, 2), "\n")
+cat(" - Payoff Time:     ", n_months_paid, " months (", round(n_months_paid / 12, 2), " years)\n\n")
+
+cat("===== Bi-Weekly Payments =====\n")
+cat(" - Payment:         $", round(biweekly_payment, 2), " every 2 weeks\n")
+cat(" - Total Paid:      $", round(total_paid_biweekly, 2), "\n")
+cat(" - Total Interest:  $", round(total_interest_biweekly, 2), "\n")
+cat(" - Payoff Time:     ", n_biweeks * 14 / 30.44, " months (", round(n_biweeks * 14 / 365, 2), " years)\n\n")
+
+cat("===== Monthly Payments ($2800) =====\n")
+cat(" - Payment:         $", extra_monthly_payment, "\n")
+cat(" - Total Paid:      $", round(total_paid_extra, 2), "\n")
+cat(" - Total Interest:  $", round(total_interest_extra, 2), "\n")
+cat(" - Payoff Time:     ", n_extra_months, " months (", round(n_extra_months / 12, 2), " years)\n")
+```
+
+```{r pander_summary, echo=FALSE}
+# Monthly Payments (Standard)
+monthly_summary <- data.frame(
+  Metric = c("Payment", "Total Paid", "Total Interest", "Payoff Time"),
+  Value = c(
+    scales::dollar(monthly_payment),
+    scales::dollar(total_paid_monthly),
+    scales::dollar(total_interest_monthly),
+    sprintf("%d months (%.2f years)", n_months_paid, n_months_paid / 12)
+  )
+)
+pander(monthly_summary, caption = "Monthly Payments (Standard)")
+
+# Bi-Weekly Payments
+biweekly_summary <- data.frame(
+  Metric = c("Payment", "Total Paid", "Total Interest", "Payoff Time"),
+  Value = c(
+    paste0(scales::dollar(biweekly_payment)," every 2 weeks"),
+    scales::dollar(total_paid_biweekly),
+    scales::dollar(total_interest_biweekly),
+    sprintf("%.2f months (%.2f years)", n_biweeks * 14 / 30.44, n_biweeks * 14 / 365)
+  )
+)
+pander(biweekly_summary, caption = "Bi-Weekly Payments")
+
+# Monthly with Extra Payment
+extra_summary <- data.frame(
+  Metric = c("Payment", "Total Paid", "Total Interest", "Payoff Time"),
+  Value = c(
+    scales::dollar(extra_monthly_payment),
+    scales::dollar(total_paid_extra),
+    scales::dollar(total_interest_extra),
+    sprintf("%d months (%.2f years)", n_extra_months, n_extra_months / 12)
+  )
+)
+pander(extra_summary, caption = paste0("Monthly Payments (",scales::dollar(extra_monthly_payment),")"))
+```
+
+### Visualization ###
+
+```{r viz1, echo=FALSE}
+df <- data.frame(
+  Plan = c(paste0("Monthly (",scales::dollar(monthly_payment),")"), paste0("Bi-Weekly(",scales::dollar(biweekly_payment),")"), paste0(scales::dollar(extra_monthly_payment)," Monthly")),
+  TotalPaid = c(total_paid_monthly, total_paid_biweekly, total_paid_extra),
+  InterestPaid = c(total_interest_monthly, total_interest_biweekly, total_interest_extra)
+)
+
+ggplot(df, aes(x = Plan, y = TotalPaid, fill = Plan)) +
+  geom_col(show.legend = FALSE) +
+  geom_text(aes(label = dollar(TotalPaid)), vjust = -0.5) +
+  labs(title = "Total Mortgage Cost: Monthly vs Bi-Weekly vs $2800",
+       y = "Total Amount Paid", x = "") +
+  scale_y_continuous(labels = dollar_format()) +
+  theme_minimal()
+```
